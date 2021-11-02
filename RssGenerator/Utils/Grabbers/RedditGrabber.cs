@@ -1,25 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using RedditSharp;
 using RedditSharp.Things;
+using Reddit = RssGenerator.Cfg.Reddit;
 
-namespace RssStation.Utils.Grabbers
+namespace RssGenerator.Utils.Grabbers
 {
     class RedditGrabber
     {
-        public static Listing<RedditSharp.Things.Post> GetNewSubRedditPosts(string subRedditName)
+        public static Listing<Post> GetNewSubRedditPosts(string subRedditName)
         {
             var webAgent = new BotWebAgent(
-                Credentials.Reddit.Login,
-                Credentials.Reddit.Password,
-                Credentials.Reddit.Id,
-                Credentials.Reddit.Secret,
-                Credentials.Reddit.RedirectURI
+                Reddit.Login,
+                Reddit.Password,
+                Reddit.Id,
+                Reddit.Secret,
+                Reddit.RedirectUri
             );
-            var reddit = new Reddit(webAgent, false);
+            var reddit = new RedditSharp.Reddit(webAgent, false);
             var subReddit = reddit.GetSubreddit(subRedditName);
 
             return subReddit.New;

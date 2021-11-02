@@ -1,45 +1,49 @@
 using System;
 using System.Collections.Generic;
-using System.ServiceModel.Syndication;
-using RedditSharp;
-using System.Linq;
-using System.Xml;
 using System.IO;
+using System.Linq;
+using System.ServiceModel.Syndication;
+using System.Xml;
 using HtmlAgilityPack;
+using RedditSharp.Things;
+using RssGenerator.Cfg;
+using RssGenerator.Utils.Grabbers;
 
-namespace RssStation.Feeds.Amd
+namespace RssGenerator.Feeds.Amd
 {
     class RedditFeed
     {
         public static Dictionary<string, List<SyndicationItem>> Grab()
         {
-            var NewSubRedditPosts = RssStation.Utils.Grabbers.RedditGrabber.GetNewSubRedditPosts("Amd");
+            var newSubRedditPosts = RedditGrabber.GetNewSubRedditPosts("Amd");
 
             var items = new Dictionary<string, List<SyndicationItem>>();
 
-            foreach (var post in NewSubRedditPosts)
+            foreach (var post in newSubRedditPosts)
             {
                 Console.WriteLine(post.Title);
 
                 try
                 {
-                    var item = new SyndicationItem();
-                    item.Id = post.Id;
-                    item.Title = new TextSyndicationContent(post.Title);
+                    var item = new SyndicationItem
+                    {
+                        Id = post.Id,
+                        Title = new TextSyndicationContent(post.Title),
+                        Content = SyndicationContent.CreateHtmlContent(GrabPostContent(post)),
+                        LastUpdatedTime = post.Created,
+                        PublishDate = post.Created
+                    };
                     item.AddPermalink(new Uri(post.Shortlink));
-                    item.Content = SyndicationContent.CreateHtmlContent(GrabPostContent(post));
-                    item.LastUpdatedTime = post.Created;
-                    item.PublishDate = post.Created;
 
-                    var postType = (post.LinkFlairText is string) ? post.LinkFlairText.Trim() : "Other";
+                    var postType = post.LinkFlairText is not null ? post.LinkFlairText.Trim() : "Other";
                     if (!items.ContainsKey(postType))
                     {
-                        items.Add(postType, (new List<SyndicationItem>()));
+                        items.Add(postType, new List<SyndicationItem>());
                     }
 
                     items[postType].Add(item);
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
 
                     Console.WriteLine(ex);
@@ -49,13 +53,13 @@ namespace RssStation.Feeds.Amd
             return items;
         }
 
-        private static string GrabPostContent(RedditSharp.Things.Post post)
+        private static string GrabPostContent(Post post)
         {
             string output = "";
 
             if (post.Url.Host != "www.reddit.com")
             {
-                output += $"<p>via <a href='{post.Url.ToString()}'>{post.Url.Host}</a></p>";
+                output += $"<p>via <a href='{post.Url}'>{post.Url.Host}</a></p>";
             }
 
             if (post.Thumbnail.IsAbsoluteUri)
@@ -107,21 +111,23 @@ namespace RssStation.Feeds.Amd
 
             foreach (var itemsCategory in items)
             {
-                SyndicationFeed feed = new SyndicationFeed();
-                feed.Description = new TextSyndicationContent(@"A subreddit dedicated to Advanced Micro Devices and its products. 
-                    This subreddit is community run and does not represent AMD unless otherwise specified.");
-                feed.Generator = "Ford-RT // RssStation";
-                feed.ImageUrl = new Uri("https://b.thumbs.redditmedia.com/mD2HFHph0Md1vppzBWNoItU5TrAPLWbc7vNBfP3lsxA.png");
-                feed.Items = itemsCategory.Value;
-                feed.Language = "en-US";
-                feed.LastUpdatedTime = itemsCategory.Value.First().LastUpdatedTime;
-                feed.Title = new TextSyndicationContent("AMD Subreddit :: " + itemsCategory.Key);
+                SyndicationFeed feed = new SyndicationFeed
+                {
+                    Description = new TextSyndicationContent(@"A subreddit dedicated to Advanced Micro Devices and its products. 
+                    This subreddit is community run and does not represent AMD unless otherwise specified."),
+                    Generator = "Ford-RT // RssStation",
+                    ImageUrl = new Uri("https://b.thumbs.redditmedia.com/mD2HFHph0Md1vppzBWNoItU5TrAPLWbc7vNBfP3lsxA.png"),
+                    Items = itemsCategory.Value,
+                    Language = "en-US",
+                    LastUpdatedTime = itemsCategory.Value.First().LastUpdatedTime,
+                    Title = new TextSyndicationContent("AMD Subreddit :: " + itemsCategory.Key)
+                };
 
                 Directory.CreateDirectory(Configuration.SavePath);
                 XmlWriter atomWriter = XmlWriter.Create(String.Format(
                     "{0}{1}amd.reddit.{2}.xml",
                     Configuration.SavePath,
-                    Path.DirectorySeparatorChar,
+                    Path.DirectorySeparatorChar.ToString(),
                     itemsCategory.Key.ToLower().Replace(" ", "_")
                 ));
                 Atom10FeedFormatter atomFormatter = new Atom10FeedFormatter(feed);

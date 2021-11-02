@@ -1,13 +1,13 @@
-using AngleSharp;
-using AngleSharp.Html.Dom;
-using Microsoft.AspNetCore.Mvc;
-using RssStation.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.ServiceModel.Syndication;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AngleSharp;
+using AngleSharp.Html.Dom;
+using Microsoft.AspNetCore.Mvc;
+using RssStation.Utils;
 
 namespace RssStation.Controllers
 {
@@ -24,7 +24,7 @@ namespace RssStation.Controllers
             var articles = document.QuerySelectorAll("div.item.news-wrap, div.item.article-wrap");
             #endregion
 
-            Parallel.ForEach(articles, (article) =>
+            Parallel.ForEach(articles, article =>
             {
                 try
                 {
@@ -32,14 +32,14 @@ namespace RssStation.Controllers
 
                     var title = header.InnerHtml.Trim();
                     var url = header.Href.Trim();
-                    var id = (new Regex(@".+\/(\d+)\/.+")).Match(url).Groups[1].Value;
+                    var id = new Regex(@".+\/(\d+)\/.+").Match(url).Groups[1].Value;
 
                     var content = article.GetElementsByClassName("description")[0].InnerHtml.Trim();
 
                     #region CONSTRUCT DATE
                     string dateString = "";
                     var date = DateTime.Now;
-                    var matches = (new Regex(@"^(\d{1,2}\s[а-я]+\s\d{4})(\sв\s(\d{2}:\d{2}))?"))
+                    var matches = new Regex(@"^(\d{1,2}\s[а-я]+\s\d{4})(\sв\s(\d{2}:\d{2}))?")
                                             .Match(article.QuerySelector("span.date").InnerHtml.Trim());
                     if (matches.Groups[3].Value == "")
                     {
@@ -60,14 +60,15 @@ namespace RssStation.Controllers
                         new Uri(url),
                         id,
                         date
-                    );
-
-                    item.PublishDate = date;
-                    item.Summary = new TextSyndicationContent(content);
+                    )
+                    {
+                        PublishDate = date,
+                        Summary = new TextSyndicationContent(content)
+                    };
 
                     items.Add(item);
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }

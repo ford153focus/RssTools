@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.ServiceModel.Syndication;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using HtmlAgilityPack;
+using RssGenerator.Cfg;
 
-namespace RssStation
+namespace RssGenerator.Feeds
 {
     class CsGo
     {
@@ -22,9 +21,9 @@ namespace RssStation
 
             #region CREATE FEED
             SyndicationFeed feed = new SyndicationFeed(
-                title: "Counter-Strike: Global Offensive  » Updates",
-                description: "Counter-Strike: Global Offensive (CS:GO) expands upon the team-based action gameplay that it pioneered when it launched in 1999.",
-                feedAlternateLink: new Uri("http://blog.counter-strike.net/index.php/category/updates/")
+                "Counter-Strike: Global Offensive  » Updates",
+                "Counter-Strike: Global Offensive (CS:GO) expands upon the team-based action gameplay that it pioneered when it launched in 1999.",
+                new Uri("http://blog.counter-strike.net/index.php/category/updates/")
             );
 
             feed.Authors.Add(new SyndicationPerson("CSGOTeamFeedback@valvesoftware.com", "Valve Corporation", "http://counter-strike.net"));
@@ -36,19 +35,20 @@ namespace RssStation
             #endregion
             
             #region PARSE POSTS FOR FEED ITEMS
-            /// FEED ITEMS STORAGE
+            /* FEED ITEMS STORAGE */
             List<SyndicationItem> items = new List<SyndicationItem>();
 
-            /// PARSE PAGE FOR POSTS
+            /* PARSE PAGE FOR POSTS */
             HtmlNodeCollection posts = doc.DocumentNode.SelectNodes("//div[@id='container']/div[@id='content_container']/div[@id='main_blog']/div[@id='post_container']/div[@class='inner_post']");
 
             foreach (HtmlNode post in posts)
             {
-                /// TITLE
+                #region TITLE
                 String title = post.SelectSingleNode(".//h2/a").InnerText;
                 Console.WriteLine(title);
+                #endregion
 
-                /// CONTENT
+                #region CONTENT
                 String content = "";
                 foreach (HtmlNode paragraph in post.SelectNodes(".//p"))
                 {
@@ -58,17 +58,20 @@ namespace RssStation
                     }
                 }
                 Console.WriteLine(content);
+                #endregion
 
-                /// URL
+                #region URL
                 String itemAlternateLinkTxt = post.SelectSingleNode(".//h2/a").Attributes["href"].Value;
                 Uri itemAlternateLink = new Uri(itemAlternateLinkTxt);
                 Console.WriteLine(itemAlternateLinkTxt);
-
-                /// ID
+                #endregion
+                
+                #region ID
                 String id = Regex.Match(itemAlternateLinkTxt, @"\/(\d+)\/$").Groups[1].Value;
                 Console.WriteLine(id);
-
-                /// PUBLISH DATE
+                #endregion
+                
+                #region PUBLISH DATE
                 String lastUpdatedTimeTxt = post.SelectSingleNode(".//p[@class='post_date']").InnerText;
                 lastUpdatedTimeTxt = Regex.Match(lastUpdatedTimeTxt, @"^\d{4}\.\d{2}\.\d{2}").Value;
                 String[] lastUpdatedTimeArray = lastUpdatedTimeTxt.Split('.');
@@ -78,15 +81,17 @@ namespace RssStation
                     new TimeSpan(0, 0, 0)
                 );
                 Console.WriteLine(lastUpdatedTimeTxt);
-
-                ///SAVE FEED ITEM
+                #endregion
+                
+                #region SAVE FEED ITEM
                 items.Add(new SyndicationItem(
                     title, content, itemAlternateLink, id, lastUpdatedTime
                 ));
+                #endregion
 
                 Utils.Utils.WriteHr();
             }
-            #endregion<
+            #endregion
             
             feed.Items = items;
             XmlWriter atomWriter = XmlWriter.Create(Configuration.SavePath+Path.DirectorySeparatorChar+"csgo.xml");

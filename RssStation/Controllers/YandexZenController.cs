@@ -1,12 +1,12 @@
-using Microsoft.AspNetCore.Mvc;
-using RssStation.Utils;
 using System;
 using System.Collections.Generic;
+using System.Json;
 using System.Net;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
-using System.Json;
 using Chronic;
+using Microsoft.AspNetCore.Mvc;
+using RssStation.Utils;
 
 namespace RssStation.Controllers
 {
@@ -19,12 +19,12 @@ namespace RssStation.Controllers
 
 
             #region LOAD AND PARSE PAGE
-            string jsonStr = (new WebClient()).DownloadString("https://zen.yandex.ru/api/v3/launcher/more?interest_name=" + tag);
+            string jsonStr = new WebClient().DownloadString("https://zen.yandex.ru/api/v3/launcher/more?interest_name=" + tag);
             JsonValue jsonValue = JsonValue.Parse(jsonStr);
             JsonArray articles = (JsonArray)jsonValue["items"];
             #endregion
 
-            Parallel.ForEach(articles, (article) =>
+            Parallel.ForEach(articles, article =>
             {
                 try
                 {
@@ -34,8 +34,8 @@ namespace RssStation.Controllers
                     var content = (string)article["text"];
 
                     #region CONSTRUCT DATE
-                    var parser = new Chronic.Parser();
-                    Span parsedObj = parser.Parse((string)article["creation_time"]);
+                    var parser = new Parser();
+                    Span parsedObj = parser.Parse(article["creation_time"]);
                     var date = (DateTime)parsedObj.Start;
                     #endregion
 
@@ -45,14 +45,15 @@ namespace RssStation.Controllers
                         new Uri(url),
                         id,
                         date
-                    );
-
-                    item.PublishDate = date;
-                    item.Summary = new TextSyndicationContent(content);
+                    )
+                    {
+                        PublishDate = date,
+                        Summary = new TextSyndicationContent(content)
+                    };
 
                     items.Add(item);
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }

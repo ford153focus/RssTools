@@ -1,11 +1,13 @@
-﻿namespace RssStation
+using RssGenerator.Feeds.Amd;
+
+namespace RssGenerator
 {
     class Program
     {
         static void Main(string[] args)
         {
             // CsGo.Generate();
-            RssStation.Feeds.Amd.RedditFeed.Compile();
+            RedditFeed.Compile();
         }
     }
 }

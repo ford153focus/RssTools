@@ -1,11 +1,13 @@
-using AngleSharp;
-using Microsoft.AspNetCore.Mvc;
-using RssStation.Utils;
 using System;
 using System.Collections.Generic;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
+using AngleSharp;
+using Microsoft.AspNetCore.Mvc;
 using RedditSharp;
+using RedditSharp.Things;
+using RssStation.Utils;
+using Reddit = RssStation.Cfg.Reddit;
 
 namespace RssStation.Controllers
 {
@@ -13,7 +15,7 @@ namespace RssStation.Controllers
     {
         private const int PostsCount = 53;
 
-        private static async Task<string> GrabPostContentAsync(RedditSharp.Things.Post post)
+        private static async Task<string> GrabPostContentAsync(Post post)
         {
             var config = Configuration.Default.WithDefaultLoader();
             var context = BrowsingContext.New(config);
@@ -32,22 +34,22 @@ namespace RssStation.Controllers
 
             #region LOAD AND PARSE PAGE
             var webAgent = new BotWebAgent(
-                Credentials.Reddit.Login,
-                Credentials.Reddit.Password,
-                Credentials.Reddit.Id,
-                Credentials.Reddit.Secret,
-                Credentials.Reddit.RedirectURI
+                Reddit.Login,
+                Reddit.Password,
+                Reddit.Id,
+                Reddit.Secret,
+                Reddit.RedirectUri
             );
-            var reddit = new Reddit(webAgent, false);
+            var reddit = new RedditSharp.Reddit(webAgent, false);
             var subReddit = reddit.GetSubreddit(subRedditName);
-            var NewSubRedditPosts = subReddit.New.GetListing(PostsCount);
+            var newSubRedditPosts = subReddit.New.GetListing(PostsCount);
             #endregion
 
-            Parallel.ForEach(NewSubRedditPosts, async (post) =>
+            Parallel.ForEach(newSubRedditPosts, async post =>
             {
                 try
                 {
-                    var postType = (post.LinkFlairText is string) ? post.LinkFlairText.Trim() : "Other";
+                    var postType = post.LinkFlairText is not null ? post.LinkFlairText.Trim() : "Other";
                     if (postType.ToLower() != flair.ToLower()) return;
 
                     var title = post.Title;
@@ -70,7 +72,7 @@ namespace RssStation.Controllers
 
                     items.Add(item);
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }

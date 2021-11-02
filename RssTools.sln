@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssGenerator", "RssGenerator\RssGenerator.csproj", "{94D41260-2299-4F9F-969E-23E9BFCD9B62}"
 EndProject

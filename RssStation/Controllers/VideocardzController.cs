@@ -1,13 +1,12 @@
-using AngleSharp;
-using AngleSharp.Html.Dom;
-using Microsoft.AspNetCore.Mvc;
-using RssStation.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.ServiceModel.Syndication;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AngleSharp;
+using AngleSharp.Html.Dom;
+using Microsoft.AspNetCore.Mvc;
+using RssStation.Utils;
 
 namespace RssStation.Controllers
 {
@@ -24,7 +23,7 @@ namespace RssStation.Controllers
             var articles = document.QuerySelectorAll("article.omc-blog-one.omc-blog-one-50[id^='post-']");
             #endregion
 
-            Parallel.ForEach(articles, (article) =>
+            Parallel.ForEach(articles, article =>
             {
                 try
                 {
@@ -46,14 +45,15 @@ namespace RssStation.Controllers
                         new Uri(url),
                         id,
                         date
-                    );
-
-                    item.PublishDate = date;
-                    item.Summary = new TextSyndicationContent(content);
+                    )
+                    {
+                        PublishDate = date,
+                        Summary = new TextSyndicationContent(content)
+                    };
 
                     items.Add(item);
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }

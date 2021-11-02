@@ -1,4 +1,4 @@
-namespace RssStation.Credentials {
+namespace RssGenerator.Cfg {
     class Beget {
         public class Databases {
             public class Vestnik {
@@ -19,7 +19,7 @@ namespace RssStation.Credentials {
         }
     }
     class Google {
-        public static string youtubeApiKey = "AIzaSyA__ReQ65q9OYXaaZX_H67_He0f97IoRd0";
+        public static string YoutubeApiKey = "AIzaSyA__ReQ65q9OYXaaZX_H67_He0f97IoRd0";
     }
 
     class Reddit {
@@ -27,7 +27,7 @@ namespace RssStation.Credentials {
         public static string Password = "Ford0Focus!";
         public static string Id = "cFggzl6kULha9w";
         public static string Secret = "a1NiFSvRR3Zw8Vx7A39z3fBdBks";
-        public static string RedirectURI = "http://vestnik.ford-rt.com";
+        public static string RedirectUri = "http://vestnik.ford-rt.com";
     }
 
     class Vk {

@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel.Syndication;
-using RedditSharp;
-using System.Linq;
-using System.Xml;
-using System.IO;
 using HtmlAgilityPack;
 
-namespace RssStation.Feeds.Amd
+namespace RssGenerator.Feeds.Amd
 {
     class DddFeed
     {
@@ -21,9 +17,9 @@ namespace RssStation.Feeds.Amd
 
             #region CREATE FEED
             SyndicationFeed feed = new SyndicationFeed(
-                title: "3DNews: Новости по тегу amd",
-                description: "",
-                feedAlternateLink: new Uri("https://3dnews.ru/tags/amd")
+                "3DNews: Новости по тегу amd",
+                "",
+                new Uri("https://3dnews.ru/tags/amd")
             );
 
             feed.Authors.Add(new SyndicationPerson("news@3dnews.ru", "3DNews", "https://3dnews.ru/"));
@@ -35,7 +31,7 @@ namespace RssStation.Feeds.Amd
             #endregion
 
             #region PARSE POSTS FOR FEED ITEMS
-            /// FEED ITEMS STORAGE
+            // FEED ITEMS STORAGE
             List<SyndicationItem> items = new List<SyndicationItem>();
             
             #endregion

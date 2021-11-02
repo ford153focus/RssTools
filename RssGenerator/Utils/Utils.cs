@@ -1,7 +1,6 @@
 using System;
-using HtmlAgilityPack;
 
-namespace RssStation.Utils
+namespace RssGenerator.Utils
 {
     class Utils
     {
