@@ -1,0 +1,19 @@
+[Unit]
+Description=.NET App running on Ubuntu
+
+[Service]
+WorkingDirectory=/home/focus/Workspace/projects/RssStation/bin/Release/linux-x64
+ExecStart=/home/focus/Workspace/projects/RssStation/bin/Release/linux-x64/RssStation
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=aspnetcore-rssstation
+User=focus
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+# The default value is 90 seconds for most distributions.
+TimeoutStopSec=90
+
+[Install]
+WantedBy=multi-user.target

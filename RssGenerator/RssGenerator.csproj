@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fizzler.Systems.HtmlAgilityPack" Version="1.2.0" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.40.2.1593" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.8.0" />
+    <PackageReference Include="RedditSharp" Version="1.1.14" />
+    <PackageReference Include="System.ServiceModel.Syndication" Version="4.5.0-preview2-26406-04" />
+  </ItemGroup>
+
+</Project>
