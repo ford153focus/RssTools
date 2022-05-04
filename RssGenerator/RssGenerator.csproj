@@ -2,15 +2,20 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fizzler.Systems.HtmlAgilityPack" Version="1.2.0" />
-    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.40.2.1593" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.8.0" />
-    <PackageReference Include="RedditSharp" Version="1.1.14" />
-    <PackageReference Include="System.ServiceModel.Syndication" Version="4.5.0-preview2-26406-04" />
+    <PackageReference Include="Fizzler.Systems.HtmlAgilityPack" Version="1.2.1" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.57.0.2665" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
+    <PackageReference Include="RedditSharp" Version="2.0.0" />
+    <PackageReference Include="System.ServiceModel.Syndication" Version="6.0.0" />
+    <PackageReference Include="WordPressPCL" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RssSharedLibrary\RssSharedLibrary.csproj" />
   </ItemGroup>
 
 </Project>
