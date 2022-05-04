@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ServiceModel.Syndication;
 using HtmlAgilityPack;
 
-namespace RssGenerator.Feeds.Amd
+namespace RssSharedLibrary.Feeds.Amd
 {
     class DddFeed
     {

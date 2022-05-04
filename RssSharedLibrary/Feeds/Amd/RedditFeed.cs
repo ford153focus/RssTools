@@ -9,7 +9,7 @@ using RedditSharp.Things;
 using RssGenerator.Cfg;
 using RssGenerator.Utils.Grabbers;
 
-namespace RssGenerator.Feeds.Amd
+namespace RssSharedLibrary.Feeds.Amd
 {
     class RedditFeed
     {

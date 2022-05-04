@@ -1,16 +1,16 @@
 using System;
 
-namespace RssGenerator.Utils
+namespace RssSharedLibrary.Utils
 {
-    class Utils
+    static class Console
     {
         public static void WriteHr()
         {
             for (int i = 0; i < 80; i++)
             {
-                Console.Write("=");
+                System.Console.Write("=");
             }
-            Console.WriteLine();
+            System.Console.WriteLine();
         }
 
     }

@@ -1,4 +1,5 @@
 using RssGenerator.Feeds.Amd;
+using RssSharedLibrary;
 
 namespace RssGenerator
 {

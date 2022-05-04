@@ -2,7 +2,7 @@ using RedditSharp;
 using RedditSharp.Things;
 using Reddit = RssGenerator.Cfg.Reddit;
 
-namespace RssGenerator.Utils.Grabbers
+namespace RssSharedLibrary.Utils.Grabbers
 {
     class RedditGrabber
     {

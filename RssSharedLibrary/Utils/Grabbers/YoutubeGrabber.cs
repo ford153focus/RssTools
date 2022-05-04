@@ -2,7 +2,7 @@
 // using Google.Apis.Services;
 // using Google.Apis.YouTube.v3;
 
-// namespace RssStation.Utils.Grabbers
+// namespace RssSharedLibrary.Utils.Grabbers
 // {
 //     /// <summary>
 //     /// YouTube Data API v3 sample: search by keyword.

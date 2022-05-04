@@ -7,7 +7,7 @@ using System.Xml;
 using HtmlAgilityPack;
 using RssGenerator.Cfg;
 
-namespace RssGenerator.Feeds
+namespace RssSharedLibrary.Feeds
 {
     class CsGo
     {
@@ -89,7 +89,7 @@ namespace RssGenerator.Feeds
                 ));
                 #endregion
 
-                Utils.Utils.WriteHr();
+                Utils.Console.WriteHr();
             }
             #endregion
             

@@ -1,0 +1,5 @@
+namespace RssSharedLibrary.Cfg {
+    class Configuration {
+        public const string SavePath = "/tmp/";
+    }
+}

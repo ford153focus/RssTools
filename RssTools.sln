@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssGenerator", "RssGenerato
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssStation", "RssStation\RssStation.csproj", "{CD9722B3-FE5E-4D99-92E4-1728119BD7BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssSharedLibrary", "RssSharedLibrary\RssSharedLibrary.csproj", "{32A895D0-965A-46D3-9B4E-438FB98DF097}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{CD9722B3-FE5E-4D99-92E4-1728119BD7BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD9722B3-FE5E-4D99-92E4-1728119BD7BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD9722B3-FE5E-4D99-92E4-1728119BD7BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32A895D0-965A-46D3-9B4E-438FB98DF097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A895D0-965A-46D3-9B4E-438FB98DF097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A895D0-965A-46D3-9B4E-438FB98DF097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A895D0-965A-46D3-9B4E-438FB98DF097}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
